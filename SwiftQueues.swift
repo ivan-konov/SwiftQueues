@@ -75,3 +75,90 @@ extension SwiftQueue: Printable {
         return storage.description
     }
 }
+
+// MARK: Iteration
+
+extension SwiftQueue: SequenceType {
+    //the backing storage is an Array so we can simply return IndexingGenerator
+    //no need of custom GeneratorType implementations
+    func generate() -> IndexingGenerator<[ElementType]> {
+        return storage.generate()
+    }
+}
+
+struct SwiftDequeue <T: Equatable> {
+    typealias ElementType = T
+    
+    private var storage = [ElementType]()
+    
+    // MARK: Queryng the Dequeue
+    var count: Int {
+        return storage.count
+    }
+    
+    var isEmpty: Bool {
+        return storage.isEmpty
+    }
+    
+    func front() -> ElementType? {
+        return storage.first
+    }
+    
+    func back() -> ElementType? {
+        return storage.last
+    }
+    
+    func findElement(element: ElementType) -> Int? {
+        return find(storage, element)
+    }
+    
+    // MARK: Adding and Removing Elements
+    
+    mutating func pushBack(element: ElementType) {
+        storage.append(element)
+    }
+    
+    mutating func pushFront(element: ElementType) {
+        storage.insert(element, atIndex: 0)
+    }
+    
+    mutating func popFront() -> ElementType? {
+        if let first = storage.first {
+            storage.removeAtIndex(0)
+            
+            return first
+        }
+        
+        return nil
+    }
+    
+    mutating func popBack() -> ElementType? {
+        if storage.count > 0 {
+            return storage.removeLast()
+        }
+        
+        return nil
+    }
+    
+    mutating func clear() {
+        storage.removeAll()
+    }
+}
+
+// MARK: Debug
+
+extension SwiftDequeue: Printable {
+    var description: String {
+        return storage.description
+    }
+}
+
+// MARK: Iteration
+
+extension SwiftDequeue: SequenceType {
+    //the backing storage is an Array so we can simply return IndexingGenerator
+    //no need of custom GeneratorType implementations
+    func generate() -> IndexingGenerator<[ElementType]> {
+        return storage.generate()
+    }
+}
