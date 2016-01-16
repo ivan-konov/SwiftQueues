@@ -23,46 +23,43 @@
 
 struct SwiftQueue <T: Equatable> {
     typealias ElementType = T
-    
+
     private var storage = [ElementType]()
-    
+
     // MARK: Queryng the Queue
     var count: Int {
         return storage.count
     }
-    
+
     var isEmpty: Bool {
         return storage.isEmpty
     }
-    
+
     func front() -> ElementType? {
         return storage.first
     }
-    
+
     func back() -> ElementType? {
         return storage.last
     }
-    
+
     func findElement(element: ElementType) -> Int? {
-        return find(storage, element)
+        return storage.indexOf(element)
     }
-    
+
     // MARK: Adding and Removing Elements
-    
+
     mutating func pushBack(element: ElementType) {
         storage.append(element)
     }
-    
+
     mutating func popFront() -> ElementType? {
-        if let first = storage.first {
-            storage.removeAtIndex(0)
-            
-            return first
+        guard let _ = storage.first else {
+            return nil
         }
-        
-        return nil
+        return storage.removeAtIndex(0)
     }
-    
+
     mutating func clear() {
         storage.removeAll()
     }
@@ -70,7 +67,7 @@ struct SwiftQueue <T: Equatable> {
 
 // MARK: Debug
 
-extension SwiftQueue: Printable {
+extension SwiftQueue: CustomStringConvertible {
     var description: String {
         return storage.description
     }
@@ -88,58 +85,56 @@ extension SwiftQueue: SequenceType {
 
 struct SwiftDequeue <T: Equatable> {
     typealias ElementType = T
-    
+
     private var storage = [ElementType]()
-    
+
     // MARK: Queryng the Dequeue
     var count: Int {
         return storage.count
     }
-    
+
     var isEmpty: Bool {
         return storage.isEmpty
     }
-    
+
     func front() -> ElementType? {
         return storage.first
     }
-    
+
     func back() -> ElementType? {
         return storage.last
     }
-    
+
     func findElement(element: ElementType) -> Int? {
-        return find(storage, element)
+        return storage.indexOf(element)
     }
-    
+
     // MARK: Adding and Removing Elements
-    
+
     mutating func pushBack(element: ElementType) {
         storage.append(element)
     }
-    
+
     mutating func pushFront(element: ElementType) {
         storage.insert(element, atIndex: 0)
     }
-    
+
     mutating func popFront() -> ElementType? {
-        if let first = storage.first {
-            storage.removeAtIndex(0)
-            
-            return first
+        guard let first = storage.first else {
+            return nil
         }
-        
-        return nil
+        storage.removeAtIndex(0)
+
+        return first
     }
-    
+
     mutating func popBack() -> ElementType? {
-        if storage.count > 0 {
-            return storage.removeLast()
+        guard let _ = storage.last else {
+            return nil
         }
-        
-        return nil
+        return storage.removeLast()
     }
-    
+
     mutating func clear() {
         storage.removeAll()
     }
@@ -147,7 +142,7 @@ struct SwiftDequeue <T: Equatable> {
 
 // MARK: Debug
 
-extension SwiftDequeue: Printable {
+extension SwiftDequeue: CustomStringConvertible {
     var description: String {
         return storage.description
     }
